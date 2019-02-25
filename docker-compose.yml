@@ -1,0 +1,48 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres:11.2-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: payments
+      POSTGRES_DB: payments
+      POSTGRES_USER: payments
+  db_test:
+    image: postgres:11.2-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: payments
+      POSTGRES_DB: payments
+      POSTGRES_USER: payments
+
+  web:
+    build: api/
+    volumes: 
+      - ./api/src:/src
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - web_migrate_db
+    command: python manage.py runserver 0.0.0.0:8000
+
+  web_migrate_db:
+    build: api/
+    # volumes would not be used in production, they make it easier to develop and tests
+    volumes: 
+      - ./api/src:/src
+    depends_on:
+      - db
+    command: python manage.py migrate
+
+  tests:
+    build: api/
+    # volumes would not be used in production, they make it easier to develop and tests
+    volumes:
+      - ./api/src:/src
+    depends_on:
+      - db_test
+      - web_migrate_db
+    command: pytest --pylama

@@ -1,0 +1,8 @@
+Django==2.1.7  # web framework
+djangorestframework==3.9.1  # Django extension for writing REST-full APIs
+drf-yasg[validation]==1.13.0  # Auto-generated swagger docs for djangorestframework
+psycopg2==2.7.7  # PostgreSQL database adapter
+pytest-django==3.4.7
+pytest==4.3.0
+pytest-cov==2.6.1  # measuring tests code coverage
+pylama==7.6.6  # pycodestyle (PEP8), pyflakes and other linters
